@@ -1,0 +1,32 @@
+
+planet index	 m1, m2, ... mn
+
+sun	0	
+merc	1
+ven	2
+earth	3 	4
+mars	5 	6 7
+jup	8 	9 ... 71
+sat	72 	73 ... 143
+ura	144	145 ... 171
+nept	172	173 ... 186
+pluto	187	188 ... 192
+other	193 ...	
+
+phobos 4.6 0.0112667 1.026 0.318910 0 1.093 5 6 noTexture.jpg
+deimos 11.75 0.0062 1.026 1.263 0 0.93 5 7 noTexture.png
+
+
+metis 75 0.0215 0.4135417 0.29478 0 0.06 8 9 noTexture.jpg
+adrastea 75.2 0.0082 0.4135417 0.29826 0 0.03 8 10 noTexture.jpg
+amalthea 91.4 0.835 0.4135417 0.49817943 0 0.374 8 11 noTexture.jpg
+thebe 110.9 0.0493 0.4135417 0.674536 0 1.076 8 12 noTexture.jpg
+io 210.85 1.8213 0.4135417 1.769137786 2.21 0.05 8 13 noTexture.jpg
+europa 335.45 1.569 0.4135417 3.551181 0.1 0.47 8 14 noTexture.jpg
+ganymede 503.52 2.6312 0.4135417 7.15455296 0 2.21 8 15 noTexture.jpg
+callisto 943.5 2.4103 0.4135417 16.6890184 0 0.192 8 16 noTexture.jpg
+themisto 369.65 0.004 0.4135417 121.82761 0.04 47.48 8 17 noTexture.jpg
+lida 5580 0.01 0.4135417 240.92 0 29.01 8 18 noTexture.jpg
+himalia 5730 0.085 0.4135417 250.56 0 29.59 8 19 noTexture.jpg
+lysithea 5066 0.018 0.4135417 259.2 0 25.77 8 20 noTexture.jpg
+
