@@ -1,7 +1,7 @@
 mercury 29 2.44 58.785 87.969 0.0 7.005 0 1 2k_mercury.jpg
 venus 54 6.052 243.686 224.701 177.36 3.3947 0 2 2k_venus_surface.jpg
 earth 75 6.378 1.0 365.25 23.45 0.0 0 3 2k_earth_daymap.jpg
-moon 24.0 1.738 27.0 27.322 1.5 5.15 3 4 2k_moon.jpg
+moon 22.0 1.738 27.0 27.322 1.5 5.15 3 4 2k_moon.jpg
 mars 114 3.394 1.026 686.98 25.19 1.851 0 5 2k_mars.jpg
 jupiter 389.25 69.911 0.4135417 4332.667 3.13 1.305 0 6 2k_jupiter.jpg
 saturn 706.5 58.232 0.444 10759.345992 26.73 2.484 0 7 2k_saturn.jpg

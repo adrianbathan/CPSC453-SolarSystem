@@ -11,6 +11,21 @@
 //			Jeremy Hart, University of Calgary
 //			John Hall, University of Calgary
 // Date:    December 2015
+// Modified by:
+//			Adrian Bathan, University of Calgary (30011953)
+// Modified on: April 13, 2018
+// Citation (for all files):
+//		SSBO (shader storage buffer object)
+//			https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object
+//			http://www.geeks3d.com/20140704/tutorial-introduction-to-opengl-4-3-shader-storage-buffers-objects-ssbo-demo/
+//		THIS PROGRAM USES OPENGL 4.3 #defines taken from
+//			https://github.com/cloudwu/ejoy3d/blob/master/3rd/glad/include/glad/glad.h#L1826
+//		Object Loader
+//			http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
+//		Textures From
+//			https://www.solarsystemscope.com/textures/
+//		Planet Stats
+//			various sites from wikipedia
 // ==========================================================================
 
 #include <iostream>
@@ -90,7 +105,6 @@ float fov = 90.0f;
 double xclick = 0, yclick = 0, oldx=0, oldy=0;
 bool lclickdown = false;
 vec2 mousePos = vec2(0, 0);
-//vec2 newMousePos;
 vec3 position = vec3(0,100,0);
 vec3 up = vec3(0,0,-1);
 bool pause = false;
@@ -115,14 +129,6 @@ float camDistance = 8.8f;
 
 int mode = 0, submode = 0;
 float fps = 60.0f;
-//vec3 direction;
-//vec3 right;
-/*vec3 direction(
-			cos(thy) * sin(thx), 
-			sin(thy),			
-			cos(thy) * cos(thx)
-		);
-vec3 right = vec3(sign(thx-M_PI/2.0f),0,cos(thx-M_PI/2.0f));*/
 // --------------------------------------------------------------------------
 // Rendering function that draws our scene to the frame buffer
 
@@ -161,13 +167,6 @@ void cameraController(float dp, float dt, float dr) {
 	camSpherePos += vec3(dp, dt, dr);
 	float theta = camSpherePos.y;
 	float phi = camSpherePos.x;
-/*	if (camSpherePos.z < ceil(camDistance)){
-		camSpherePos.z = ceil(camDistance);
-	}
-	else if (camSpherePos.z > 75){
-		camSpherePos.z = 75;
-	}*/
-//	cout << theta << " , " << phi << endl;
 	if (phi >M_PI-0.001) phi = M_PI-0.001;
 	if (phi <0.001) phi = 0.001f;
 	camPos = camSpherePos.z * vec3(cos(theta) * sin(phi),
@@ -194,7 +193,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	
 	
-//	else {
 		if (key == GLFW_KEY_1 && action == GLFW_PRESS)  {
 			mode = 0;
 			submode = 0;
@@ -287,9 +285,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	}
 	if (key == GLFW_KEY_UP) {// && action == GLFW_PRESS)
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-//			fps = fps / 1.5f;
-//			if (fps <= 0.1f)
-//				fps = 0.1f;
 			if (fps <= 5.0f)
 				fps =  5.0f;//fps - 0.1f;
 			else if (fps <= 10.0f)
@@ -300,9 +295,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	}
 	if (key == GLFW_KEY_DOWN) {// && action == GLFW_PRESS) 
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-//			fps = fps * 1.5f;
-//			if (fps <= 1.0f)
-//				fps = fps + 0.1f;
 			if (fps < 10.0f)
 				fps = fps + 1.0f;
 			else
@@ -327,20 +319,11 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 		}	
 	}
-//	cout << fps << endl;
-//cout << mode << endl;
-	//	camTarget = spheresUnordered[mode]->getCenter();
-//		camSpherePos = vec3(M_PI/2, M_PI/2, spheresUnordered[mode]->getRadius()*5);
-
-//		cameraController(0.0f, 0.0f, spheresUnordered[mode]->getRadius()*5);
-//	}
-
 }
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 	cout.precision(8);
 	
-//	double x_raw, y_raw, x_ogl, y_ogl;//, dx0,dy0;
 	vec2 newPos = vec2(xpos/1024, -ypos/1024)*2.f - vec2(1.f);
 		vec2 diff = newPos - mousePos;
 		float dt = diff.x;
@@ -349,42 +332,15 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 	if (lclickdown) {	
 		vec3 oldCamDir = camDir;
 		cameraController(-dp, dt, 0.0f);
-//		if (camDir.x*oldCamDir.x < 0) {
-//			cameraController(-dp, -dt, -2*camSpherePos.z);
-//
-//			camPos = -camPos;//vec3(-camPos.x, -camPos.y, camPos.z);
-//			cameraController(0, 0, 0.0f);
-//		}
-//		cout << camDir.x << "," << oldCamDir.x << "," << camPos.z << "," << endl;
-		
 	}	
 	mousePos = newPos;
 }
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-//	double x, y;
-//	glfwGetCursorPos(window, &x, &y);
-//	xclick = (float)x;
-//	yclick = (float)y;
-//	xclick = (-1024+x)/1024;
-//	yclick = (1024-y)/1024;
-//	glfwGetCursorPos(window, &xclick, &yclick);
-	
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-	{	
 		lclickdown = true;
-//		mousePos=vec2(x,y);
-//		dx = 0;
-//		dy = 0;
-	}
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
-	{
 		lclickdown = false;
-//		oldx=dx;//thx;
-//		oldy=dy;//thy;
-
-	}
-	
 }
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
@@ -445,19 +401,15 @@ bool parseTXT(const char * path) {
 		return false;
 	}
 
-//	mySphere *galaxy = new mySphere("galaxy", vec3(0.0f),5000.0f);
 	mySphere *galaxy = new mySphere("galaxy", 0.0f,5000.0f);
 	galaxy->setParameters(0.0f, 0.0f, radians(0.0f), radians(0.0f), -1);
 	galaxy->generateSphere("2k_stars_milky_way.jpg");
 	stars.push_back(galaxy);
-//	mySphere *sun = new mySphere("sun", galaxy, vec3(0.0f),8.8f);
 	mySphere *sun = new mySphere("sun", galaxy, 0.0f,8.8f);
 	sun->setParameters(26.24f, 26.24f, radians(7.25f), radians(0.0f), 0);
 	sun->generateSphere("2k_sun.jpg");
 	spheres.push_back(sun);
 	spheresUnordered.push_back(sun);	
-int count = 0;
-//	while (getline( myfile, line )) {
 	while( 1 ){
 
 		char objectName[64];
@@ -470,7 +422,6 @@ int count = 0;
 		if (res == EOF)
 			break; // EOF = End Of File. Quit the loop.
 		int res0 = fscanf(file, "%f %f %f %f %f %f %d %d %s\n",
-//		int res = fscanf(line, "%s %f %f %f %f %f %f %s %d\n", objectName,
 						&parseX, &parseR, &parseRot, &parseOrb, &parseAng, &parseInc,
 						&parentIndex, &planetIndex, textureFile);
 		cout << objectName<< "  ,  " << textureFile<<endl;
@@ -496,18 +447,11 @@ int count = 0;
 		if(planetIndex == 10)
 			planetName = "pluto";
 		
-//		mySphere *s = new mySphere(objectName, spheres[parentIndex], spheres[parentIndex]->getCenter() + vec3(parseX, 0.0f, 0.0f), parseR);
 		mySphere *s = new mySphere(planetName, spheres[parentIndex], parseX, parseR);
-//		mySphere *s = new mySphere(objectName, spheres[parentIndex], vec3(parseX, 0.0f, 0.0f), parseR);
 		s->setParameters(parseRot, parseOrb, radians(parseAng), radians(parseInc), planetIndex);
 		s->generateSphere(textureFile);
-//		cout << s->sphereName << endl;
 		spheres.push_back(s);
 		spheresUnordered.push_back(s);	
-		count++;
-//		if(!LoadVBO(&s->sphereGeometry, s->getPoints(), s->getUVs(), s->getNormals(), s->getIndices()))
-//			cout << "Failed to load vbo" << endl;
-			
 	}
 	
 	fclose(file);
@@ -566,24 +510,6 @@ int main(int argc, char *argv[])
 	}
 
 	// three vertex positions and assocated colours of a triangle
-/*	vec3 vertices[] = {
-		vec3( -1.0f, -1.0f, .0f ),
-		vec3( 1.0f,  1.0f, .0f ),
-		vec3( 1.0f, -1.0f, .0f )
-	};
-
-	vec3 colours[] = {
-		vec3( 1.0f, 0.0f, 0.0f ),
-		vec3( 0.0f, 1.0f, 0.0f ),
-		vec3( 0.0f, 0.0f, 1.0f )
-	};
-	vec2 textures[] = {
-		vec2( .0f, .0f ),
-		vec2( 1.0f,  1.0f ),
-		vec2( 1.0f, .0f )
-	};
-	
-	*/
 			
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
@@ -672,17 +598,6 @@ glUseProgram(0);
 	LoadVBO(&stars[0]->sphereGeometry, stars[0]->getPoints(), stars[0]->getUVs(), stars[0]->getNormals(), stars[0]->getIndices());
 	while (!glfwWindowShouldClose(window))
 	{
-/*		if (resetPos){
-			for (mySphere *s : spheres) {
-				s->resetSpherePos();
-				resetPos =false;
-				cameraController(0.0f, 0.0f, 0.0f);
-			}
-		}*/
-//		vec3 moonearth = spheresUnordered[0]->getCenter()-spheresUnordered[2]->getCenter();
-//		float dmoonearth = distance(spheresUnordered[0]->getCenter(),spheresUnordered[2]->getCenter());
-//		cout << "----------" << endl;
-//		cout << moonearth0.x << "," << moonearth0.y << ","<< moonearth0.z << "         "<< dmoonearth0 <<endl;
 		if (!pause) {
 			windspeed = windspeed + 1.0f/2048.0f;
 			if (windspeed >= 2048.0f)
@@ -694,7 +609,6 @@ glUseProgram(0);
 				s->setSpeed(fps);
 //				s->setAngles(fps);
 				
-//				s->setCenter(vec3(s->parent->getOffset(),0.0f,0.0f) + vec3(s->getOffset(), 0.0f, 0.0f));
 				s->orbit();
 				s->rotate();
 				
@@ -704,18 +618,11 @@ glUseProgram(0);
 	
 		camTarget = spheresUnordered[mode]->getCenter0();
 		camSpherePos = vec3(camSpherePos.x, camSpherePos.y, camSpherePos.z);
-	//	camDistance = spheresUnordered[mode]->getRadius();
-//		cameraController(camSpherePos.x, camSpherePos.y, camSpherePos.z);
-		//cameraController(0.0f, 0.0f, spheresUnordered[mode]->getRadius()*5);
 		cameraController(0.0f, 0.0f, 0.0f);
 	
 		
 		mat4 ProjectionMatrix = perspective(radians(fov), 3.0f / 3.0f, 0.1f, 10000.0f);
-		mat4 ViewMatrix       = lookAt(
-									camPos, //position,           // Camera is here
-									camTarget,//vec3(0.0f),//position+direction, // and looks here : at the same position, plus "direction"
-//									cross(right,direction));
-									-camUp);//up);//vec3(.0f,.0f,-1.0f));             // Head is up (set to 0,-1,0 to look upside-down)
+		mat4 ViewMatrix = lookAt(camPos, camTarget, -camUp);
 		mat4 ModelMatrix = mat4(1.0);
 		mat4 MVP = ProjectionMatrix * ViewMatrix;// * ModelMatrix;
 		glUseProgram(program);
@@ -735,41 +642,10 @@ glUseProgram(0);
 			trans2 = rotate(identity, spheresUnordered[i]->getOrbAngle(), vec3(0.0f,0.0f,1.0f));
 			trans3 = translate(identity, spheresUnordered[i]->parent->getCenter0());
 			trans4 = rotate(identity, -spheresUnordered[i]->getOrbAngle(), vec3(0.0f,0.0f,1.0f));
-		switch(submode) {
-			case 0: trans = MVP*trans0*trans1*trans2*trans3*trans4; break;
-			case 1: trans = MVP*trans0*trans1*trans2*trans3*trans4; break;
-			case 2: trans = MVP*trans2*trans1*trans4*trans3*trans0; break;
-			case 3: trans = MVP*trans2*trans1*trans4*trans3*trans0; break;
-			case 4: trans = MVP*trans4*trans1*trans0*trans3*trans2; break;
-			case 5: trans = MVP*trans4*trans1*trans0*trans3*trans2; break;
-			case 6: trans = MVP*trans0*trans3*trans2*trans1*trans4; break;
-			case 7: trans = MVP*trans0*trans3*trans2*trans1*trans4; break;
-			case 8: trans = MVP*trans2*trans3*trans4*trans1*trans0; break;
-			case 9: trans = MVP*trans2*trans3*trans4*trans1*trans0; break;
-			case 10: trans = MVP*trans4*trans3*trans0*trans1*trans2; break;
-			case 11: trans = MVP*trans4*trans3*trans0*trans1*trans2; break;
-		}*/
-/*			case 12: trans = trans2*trans0*trans1*trans3; break;
-			case 13: trans = trans2*trans0*trans3*trans1; break;
-			case 14: trans = trans2*trans1*trans0*trans3; break;
-			case 15: trans = trans2*trans1*trans3*trans0; break;
-			case 16: trans = trans2*trans3*trans0*trans1; break;
-			case 17: trans = trans2*trans3*trans1*trans0; break;
-			case 18: trans = trans3*trans0*trans1*trans2; break;
-			case 19: trans = trans3*trans0*trans2*trans1; break;
-			case 20: trans = trans3*trans1*trans0*trans2; break;
-			case 21: trans = trans3*trans1*trans2*trans0; break;
-			case 22: trans = trans3*trans2*trans0*trans1; break;
-			case 23: trans = trans3*trans2*trans1*trans0; break;
-		}
-		trans = MVP*trans0*trans1*trans2*trans3;
+		trans = MVP*trans0*trans1*trans2*trans3*trans4;
 */
-//		trans = MVP*trans0*trans1*trans2*trans3*trans4;
-
-//		spheres[i]->setCenter(vec3(trans[3][0],trans[3][1],trans[3][2]));
 			glUseProgram(program);
 //			glUniformMatrix4fv(glGetUniformLocation(program, "MVP"), 1, GL_FALSE, &trans[0][0]);
-//			glUniform1i(glGetUniformLocation(program, "isModel"), 0);//spheres[i]->getCenter() != vec3(0.0f));
 			glUniform1i(glGetUniformLocation(program, "isDiffuse"), strcmp(spheres[i]->sphereName,"sun"));//spheres[i]->getCenter() != vec3(0.0f));
 			glUniform1i(glGetUniformLocation(program, "isEarth"), !strcmp(spheres[i]->sphereName,"earth"));// != vec3(0.0f));
 			glUniform1i(glGetUniformLocation(program, "isMoon"), !strcmp(spheres[i]->sphereName,"moon"));// != vec3(0.0f));
@@ -809,41 +685,23 @@ glUseProgram(0);
 //			RenderScene(&spheres[i]->sphereGeometry, program, &spheres[i]->sphereTexture, true, spheres[i]->getIndices().size());
 //			else
 			RenderScene(&spheres[i]->sphereGeometry, program, &spheres[i]->sphereTexture, false, spheres[i]->getIndices().size());
-//			RenderScene(&spheresUnordered[i]->sphereGeometry, program, &spheresUnordered[i]->sphereTexture, false, spheresUnordered[i]->getIndices().size());
 		}
 		
 		
-//		LoadIndices(&sungeo, isun, sisize);
-//		RenderScene(&shima[0], program, &kaze[0],true,-1);
 		glUseProgram(program);
-//			
-//		MVP = glm::rotate(&MVP[0][0], 120.0f, vec3(0.0f,0.0f,1.0f)); //ProjectionMatrix * ViewMatrix;// * ModelMatrix;
-		
 		trans = glm::translate(MVP, spheresUnordered[3]->getCenter());
-//		glUniformMatrix4fv(glGetUniformLocation(program, "ROT"), 1, GL_FALSE, &trans[0][0]);
 		trans = glm::rotate(trans, (float)modelAngle, glm::vec3(0.0f, 0.0f, 1.0f));
 		trans = glm::rotate(trans, radians(-46.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		trans = glm::rotate(trans, radians(-35.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		trans = glm::rotate(trans, (float)M_PI/-2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(glGetUniformLocation(program, "MVP"), 1, GL_FALSE, &trans[0][0]);
-		trans0 = glm::rotate(MVP, (float)modelAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-		trans0 = glm::rotate(trans0, radians(-46.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		trans0 = glm::rotate(trans0, radians(-35.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		trans0 = glm::rotate(trans0, (float)M_PI/-2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-/*		trans0 = trans;
-		trans0[3][0] = 0.0f;
-		trans0[3][1] = 0.0f;
-		trans0[3][2] = 0.0f;*/
-		glUniformMatrix4fv(glGetUniformLocation(program, "ROT"), 1, GL_FALSE, &trans0[0][0]);
 		glUseProgram(0);
-//			
+
 		for (int i=0; i<vertices0.size(); i++) {
 			glUseProgram(program);
-//			glUniform1i(glGetUniformLocation(program, "isModel"), -1);//spheres[i]->getCenter() != vec3(0.0f));
 			glUniform1i(glGetUniformLocation(program, "isDiffuse"), 0);//spheres[i]->getCenter() != vec3(0.0f));
 			glUniform1i(glGetUniformLocation(program, "isEarth"), 0);// != vec3(0.0f));
 			glUniform1i(glGetUniformLocation(program, "isMoon"), 0);// != vec3(0.0f));
-//			glUniform1f(glGetUniformLocation(program, "windOffset"), windspeed);// != vec3(0.0f));
 			glUseProgram(0);
 			RenderScene(&shima[i], program, &kaze[i],false,-1);
 		}
@@ -853,7 +711,6 @@ glUseProgram(0);
 	}
 
 	// clean up allocated resources before exit
-//	DestroyGeometry(&geometry);
 	glUseProgram(0);
 	glDeleteProgram(program);
 	glfwDestroyWindow(window);
